@@ -42,7 +42,7 @@ def leArquivo():
 def criaMascara(tamMascara):
     """ Cria mascara
     """
-    return np.ones((tamMascara,tamMascara), dtype=np.float64)
+    return np.ones((tamMascara,tamMascara))
 
 
 def normalizacao(img, mascara):
@@ -54,10 +54,10 @@ def normalizacao(img, mascara):
     print(min)
     p1 = np.subtract(img, min)
     p2 = np.subtract(max, min)
-    p3 = np.divide(p1, p2)
+    np.place(p2, p2 == 0, 0.0000001) 
+    with np.errstate(invalid='ignore', divide='ignore'):
+        p3 = np.true_divide(p1, p2) 
     return p3 * 255
-
-    
 
 
 def main():
@@ -66,8 +66,8 @@ def main():
     img, tamMascara = leArquivo()
     mascara =  criaMascara(tamMascara)
     resultado = normalizacao(img, mascara)
-    print(resultado)
-
+    cv2.imshow('image', resultado)
+    cv2.waitKey(0)
 
 
 
