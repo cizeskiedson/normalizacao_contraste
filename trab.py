@@ -50,14 +50,12 @@ def normalizacao(img, mascara):
     """
     max = maximum(img, mascara)
     min = minimum(img, mascara)
-    print(max)
-    print(min)
     p1 = np.subtract(img, min)
     p2 = np.subtract(max, min)
     np.place(p2, p2 == 0, 0.0000001) 
     with np.errstate(invalid='ignore', divide='ignore'):
         p3 = np.true_divide(p1, p2) 
-    return p3 * 255
+    return np.uint8(p3 * 255)
 
 
 def main():
